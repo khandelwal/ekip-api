@@ -20,11 +20,27 @@ def record_locators(request):
             'Maximum of %s record locators can be requested' % MAX_REQUESTABLE)
 
     record_locators = generate_locators(num_locators)
+    record_locators = save_locators(record_locators)
+
     data = {'record_locators': record_locators}
     response = json.dumps(data)
 
     return HttpResponse(response, content_type='application/json')
 
+
+def save_locators(record_locators):
+    locators = []
+    for locator in record_locators:
+        if not Ticket.objects.filter(record_locator=locator).exists():
+            create_new_ticket(locator)
+
+        #check against database 
+
+        #if does not exist, save
+
+        #else 
+        
+        #generate a new one
 
 def generate_locators(n=1):
     """ Generate 'n' unique record locators. """
